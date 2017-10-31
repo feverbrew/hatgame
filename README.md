@@ -9,10 +9,10 @@ What's done?:
 - Basic monster and hero class
 - Map movement
 - Game states
+- Menu System
 - Framework for some later features
 
 Currently working on:
-- Menu system (this should be a class that can implemented for any game)
 - Battle graphics
 
 Needs to be implemented:
