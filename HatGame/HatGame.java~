@@ -96,32 +96,14 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
   
   public void actionPerformed(ActionEvent e)
   {
-  	switch(state){
-  	case MAP:
-  		/*
-  		for (int i = 1; i < this.map1.getMonsters().size(); i++) {
-			if (this.map1.getMonsters().get(0).getLoc().equals(this.map1.getMonsters().get(i).getLoc())) {
-				Menu Attack1 = new Menu(this.map1.getMonsters().get(0).getAttacks()[0]);
-				Menu Attack2 = new Menu((this.map1.getMonsters().get(0).getAttacks()[1]),Attack1);
-				Menu Attack3 = new Menu((this.map1.getMonsters().get(0).getAttacks()[2]),Attack2);
-				Menu Attack4 = new Menu((this.map1.getMonsters().get(0).getAttacks()[3]),Attack3);
-				Attack1.superMenu(Attack);
-				Attack2.superMenu(Attack);
-				Attack3.superMenu(Attack);
-				Attack4.superMenu(Attack);
-				
-				state = GameState.BATTLE;
-			}
-		}
-		*/
-		break;
-		
-	case BATTLE:
-		
-		break;
-		
-	}
-  
+  	/*
+    for (int i = 1; i < this.map1.getMonsters().size(); i++) {
+      if (this.map1.getMonsters().get(0).getLoc() == this.map1.getMonsters().get(i).getLoc()) {
+      	  state = GameState.BATTLE;
+      
+      }
+    }
+    */
   }
   
   public void keyPressed(KeyEvent e)
@@ -143,21 +125,14 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		  ((Monster)this.map1.getMonsters().get(0)).move(1, 0);
 		}
 		repaint();
-		
 		for (int i = 1; i < this.map1.getMonsters().size(); i++) {
 			if (this.map1.getMonsters().get(0).getLoc().equals(this.map1.getMonsters().get(i).getLoc())) {
-				Menu Attack1 = new Menu(this.map1.getMonsters().get(0).getAttacks()[0]);
-				Menu Attack2 = new Menu((this.map1.getMonsters().get(0).getAttacks()[1]),Attack1);
-				Menu Attack3 = new Menu((this.map1.getMonsters().get(0).getAttacks()[2]),Attack2);
-				Menu Attack4 = new Menu((this.map1.getMonsters().get(0).getAttacks()[3]),Attack3);
-				Attack1.superMenu(Attack);
-				
 				state = GameState.BATTLE;
 			}
 		}
-		
 		break;
 	case BATTLE:
+		//This is gonna require a tutorial prob, need to figure out how to implement a menu with an arrow, might need arrow class...
 		
 		
 		if ((key == 'w') && (current.goUp()!=null)) {
@@ -170,7 +145,7 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		  this.current=current.goDown();
 		}
 		if ((key == 'd') && (current.goRight()!=null)) {
-		  this.current=current.goRight();
+		  this.current=current.goLeft();
 		}
 		repaint();
 		break;
@@ -185,7 +160,7 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
   
   }
 }
-/*
+
 class Panel extends JPanel {
 
     public Panel() {
@@ -202,6 +177,4 @@ class Panel extends JPanel {
         // Draw Text
         g.drawString("Punch",10,20);
     }  
-
 }
-*/
