@@ -1,5 +1,6 @@
 //Hat class, the version of wearable armor in this game. Hats can also add magic power.
 // has hat name as well.
+//also special ability
 
 public class Hat{
 

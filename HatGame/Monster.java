@@ -9,6 +9,7 @@ public class Monster{
 	protected int attack;
 	protected int defense;
 	protected Location l;
+	protected String[] Attacks = new String[4];
 	
 	//Constructs a monster with no location (probably never used)
 	public Monster(){
@@ -16,6 +17,10 @@ public class Monster{
 		this.chealth=50;
 		this.attack=1;
 		this.defense=1;
+		this.Attacks[0] = "Bite";
+		this.Attacks[1] = "Bite";
+		this.Attacks[2] = "Bite";
+		this.Attacks[3] = "Bite";
 	}
 	
 	//Constructs a monster at location (x,y)
@@ -25,6 +30,10 @@ public class Monster{
 		this.attack=1;
 		this.defense=1;
 		this.l= new Location(x,y);
+		this.Attacks[0] = "Bite";
+		this.Attacks[1] = "Bite";
+		this.Attacks[2] = "Bite";
+		this.Attacks[3] = "Bite";
 	}
 	
 	public Location getLoc(){
@@ -51,6 +60,10 @@ public class Monster{
 		return chealth;
 	}
 	
+	public String[] getAttacks(){
+		return Attacks;
+	}
+	
 	//when something should die, this method can be called. Need to implement deletion of dead things
 	public void kill(){
 		alive = false;
@@ -63,6 +76,12 @@ public class Monster{
 	//At some point should unify terminology, move calls shift method in location class, but there is also a move method in location
 	public void move(int x, int y){
 		this.l.shift(x,y);
+	}
+	
+	public void takeDamage(int damage){
+		chealth-=damage;
+		if (chealth==0)
+			this.kill();
 	}
 	
 }

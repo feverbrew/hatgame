@@ -31,11 +31,12 @@ public class Menu{
 	
 	public void subMenu(Menu right){
 		this.right = right;
-		right.superMenu(this);
+		//right.superMenu(this);
 	}
 	
 	public void superMenu(Menu left){
 		this.left = left;
+		left.subMenu(this);
 	}
 	
 	public void addDown(Menu down){
