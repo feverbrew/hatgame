@@ -11,12 +11,13 @@ What's done?:
 - Game states
 - Menu System
 - Framework for some later features
+- Basic battle system
 
 Currently working on:
 - Battle graphics
 
 Needs to be implemented:
-- Battle system (including special attacks and learning them)
+- Advanced battle system (special attacks and learning them)
 - Shops
 - Different kinds of monsters
 - Random map design
