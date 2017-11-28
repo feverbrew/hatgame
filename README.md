@@ -2,6 +2,7 @@
 A small and basic RPG
 
 Unique feature: Hats. Hats provide stats to the hero and can be used up as a one-time-use item for some kind of attack or effect in battle.
+
 The rest of the game is pretty much just your standard rpg. Graphics implemented using Java's graphics. The game should be mostly randomly generated dungeon crawling. Goal is undecided, but maybe a boss at the end guarding something.
 
 What's done?:
