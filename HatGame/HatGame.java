@@ -12,9 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import javax.imageio.*;
 
 enum GameState{
-	MENU, MAP, BATTLE
+	MENU, MAP, BATTLE, GAMEOVER
 }
 
 public class HatGame extends JComponent implements ActionListener, KeyListener
@@ -24,6 +28,7 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 
 //initializing gamestate
   GameState state = GameState.MAP;
+  Font font0 = new Font("arial",Font.BOLD,15);
   
   //Menu initializing
   Menu Attack = new Menu("Attack");
@@ -86,7 +91,7 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		g.fillRect(0,0,500,500);
 		
 		//setting font and color for text
-		Font font0 = new Font("arial",Font.BOLD,15);
+		//Font font0 = new Font("arial",Font.BOLD,15);
 		g.setFont(font0);
 		g.setColor(Color.black);
 		
@@ -95,12 +100,29 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		g.drawString("Mana",25,450);
 		g.drawString(this.map1.getMonsters().get(0).getchealth()+"/"+this.map1.getMonsters().get(0).getHealth(),100,400);
 		
+		//need to fix this, not loading image...
+		BufferedImage enemy1 = null;
+		try {
+		enemy1 = ImageIO.read(new File("/home/feverbrew/Documents/Projects/HatGame/Images/cowboyswordsman.png"));
+		} catch (IOException e) {
+			}
+		g.drawImage(enemy1, 350, 25, null);
+		
+		g.drawString(mon.getchealth() + "/" + mon.getHealth(),100,100);
+		
 		
 		//first menu, items and attack lead to second menu, others just do action
 		
 		current.paintMenu(g,300,375,75,25,font0);
+		break;
 		
-		
+	case GAMEOVER:
+		g.setColor(new Color(0,0,0));
+		g.fillRect(0,0,500,500);
+		g.setColor(new Color(255,255,255));
+		g.setFont(font0);
+		g.drawString("Game Over",200,200);
+		break;
 		
 	}
   }
@@ -114,7 +136,9 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		break;
 		
 	case BATTLE:
-		
+		if (!hero.isAlive())
+			state = GameState.GAMEOVER;
+			repaint();
 		break;
 		
 	}
@@ -129,28 +153,31 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
   	case MAP:
 		
 		//move hero by pressing w,a,s,d
-		if ((key == 'w') && (this.map1.getMonsters().get(0).getLoc().getY() != 1)) {
-		  ((Monster)this.map1.getMonsters().get(0)).move(0, -1);
+		if ((key == 'w') && (hero.getLoc().getY() != 1)) {
+		  ((Monster)hero).move(0, -1);
 		}
-		if ((key == 'a') && (this.map1.getMonsters().get(0).getLoc().getX() != 1)) {
-		  ((Monster)this.map1.getMonsters().get(0)).move(-1, 0);
+		if ((key == 'a') && (hero.getLoc().getX() != 1)) {
+		  ((Monster)hero).move(-1, 0);
 		}
-		if ((key == 's') && (this.map1.getMonsters().get(0).getLoc().getY() != 5)) {
-		  ((Monster)this.map1.getMonsters().get(0)).move(0, 1);
+		if ((key == 's') && (hero.getLoc().getY() != 5)) {
+		  ((Monster)hero).move(0, 1);
 		}
-		if ((key == 'd') && (this.map1.getMonsters().get(0).getLoc().getX() != 5)) {
-		  ((Monster)this.map1.getMonsters().get(0)).move(1, 0);
+		if ((key == 'd') && (hero.getLoc().getX() != 5)) {
+		  ((Monster)hero).move(1, 0);
 		}
 		repaint();
 		
 		//checking if hero occupies the same spot as monster, if so switches to battle gamestate
 		for (int i = 1; i < this.map1.getMonsters().size(); i++) {
-			if (this.map1.getMonsters().get(0).getLoc().equals(this.map1.getMonsters().get(i).getLoc()) && this.map1.getMonsters().get(i).isAlive()) {
-				Menu Attack1 = new Menu(this.map1.getMonsters().get(0).getAttacks()[0]);
-				Menu Attack2 = new Menu((this.map1.getMonsters().get(0).getAttacks()[1]),Attack1);
-				Menu Attack3 = new Menu((this.map1.getMonsters().get(0).getAttacks()[2]),Attack2);
-				Menu Attack4 = new Menu((this.map1.getMonsters().get(0).getAttacks()[3]),Attack3);
+			if (hero.getLoc().equals(this.map1.getMonsters().get(i).getLoc()) && this.map1.getMonsters().get(i).isAlive()) {
+				//probably not implementing special moves right now, this is just going to be busy work and optimizing mostly.
+				/*
+				Menu Attack1 = new Menu(hero.getAttacks()[0]);
+				Menu Attack2 = new Menu((hero.getAttacks()[1]),Attack1);
+				Menu Attack3 = new Menu((hero.getAttacks()[2]),Attack2);
+				Menu Attack4 = new Menu((hero.getAttacks()[3]),Attack3);
 				Attack1.superMenu(Attack);
+				*/
 				
 				mon=this.map1.getMonsters().get(i);
 				state = GameState.BATTLE;
@@ -159,8 +186,7 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		
 		break;
 	case BATTLE:
-		
-		//navigate through menu with w,a,s,d, select with space
+		//navigate through menu with w,a,s,d, select with x
 		if ((key == 'w') && (current.goUp()!=null)) {
 		  this.current=current.goUp();
 		}
@@ -174,14 +200,22 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		  this.current=current.goRight();
 		}
 		if ((key == 'x') && (current.equals(Attack))) {
-			mon.takeDamage(hero.getAttack());
-			if (!mon.isAlive())
-				state = GameState.MAP;
-			else   //need to do some if statement with speed at some point here so that whichever has higher speed does dmg first
+			if (hero.getSpeed()>=mon.getSpeed()){
+				mon.takeDamage(hero.getAttack());
+				if (!mon.isAlive())
+					state = GameState.MAP;
+				else 
+					hero.takeDamage(mon.getAttack());
+			} else{
 				hero.takeDamage(mon.getAttack());
+				mon.takeDamage(hero.getAttack());
+				if (!mon.isAlive())
+					state = GameState.MAP;
+			}
+				
 		}
 		if ((key == 'x') && (current.equals(Defend))) {
-			hero.takeDamage(mon.getAttack()/2);
+			hero.takeDamage(mon.getAttack()/hero.getDefense());
 		}
 		if ((key == 'x') && (current.equals(hat))) {
 			//placeholder but needs to use hat ability
@@ -189,7 +223,11 @@ public class HatGame extends JComponent implements ActionListener, KeyListener
 		
 		repaint();
 		break;
-	  }
+	case GAMEOVER:
+		
+		break;
+		
+	}
   }
   
   public void keyReleased(KeyEvent e) {

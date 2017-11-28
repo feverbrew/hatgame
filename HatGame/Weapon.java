@@ -7,6 +7,11 @@ public class Weapon{
 	private int power;
 	private String[] abilities;
 	
+	public Weapon(String name, int power){
+		this.name = name;
+		this.power = power;
+	}
+	
 	public String name(){
 		return name;
 	}

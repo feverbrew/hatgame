@@ -8,8 +8,9 @@ public class Monster{
 	protected int chealth;
 	protected int attack;
 	protected int defense;
+	protected int speed;
 	protected Location l;
-	protected String[] Attacks = new String[4];
+	//protected String[] Attacks = new String[4];
 	
 	//Constructs a monster with no location (probably never used)
 	public Monster(){
@@ -17,10 +18,11 @@ public class Monster{
 		this.chealth=50;
 		this.attack=1;
 		this.defense=1;
-		this.Attacks[0] = "Bite";
-		this.Attacks[1] = "Bite";
-		this.Attacks[2] = "Bite";
-		this.Attacks[3] = "Bite";
+		this.speed=5;
+		//this.Attacks[0] = "Bite";
+		//this.Attacks[1] = "Bite";
+		//this.Attacks[2] = "Bite";
+		//this.Attacks[3] = "Bite";
 	}
 	
 	//Constructs a monster at location (x,y)
@@ -29,11 +31,12 @@ public class Monster{
 		this.chealth=50;
 		this.attack=1;
 		this.defense=1;
+		this.speed=5;
 		this.l= new Location(x,y);
-		this.Attacks[0] = "Bite";
-		this.Attacks[1] = "Bite";
-		this.Attacks[2] = "Bite";
-		this.Attacks[3] = "Bite";
+		//this.Attacks[0] = "Bite";
+		//this.Attacks[1] = "Bite";
+		//this.Attacks[2] = "Bite";
+		//this.Attacks[3] = "Bite";
 	}
 	
 	public Location getLoc(){
@@ -60,8 +63,8 @@ public class Monster{
 		return chealth;
 	}
 	
-	public String[] getAttacks(){
-		return Attacks;
+	public int getSpeed(){
+		return speed;
 	}
 	
 	//when something should die, this method can be called. Need to implement deletion of dead things
@@ -80,7 +83,7 @@ public class Monster{
 	
 	public void takeDamage(int damage){
 		chealth-=damage;
-		if (chealth==0)
+		if (chealth<=0)
 			this.kill();
 	}
 	

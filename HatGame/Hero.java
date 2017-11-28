@@ -9,6 +9,7 @@ public class Hero extends Monster{
 	private int mana = 10;
 	private Weapon w;
 	private Hat h;
+	private Boots b;
 	private final int myhealth;
 
 	//Constructs hero without a starting point, almost never used
@@ -16,25 +17,27 @@ public class Hero extends Monster{
 		w=null;
 		h=null;
 		this.myhealth=100;
-		this.Attacks[0]="Punch";
-		this.Attacks[1]="Nada";
-		this.Attacks[2]="Nada";
-		this.Attacks[3]="Nada";
+		//this.Attacks[0]="Punch";
+		//this.Attacks[1]="Nada";
+		//this.Attacks[2]="Nada";
+		//this.Attacks[3]="Nada";
 	}
 	
 	//Constructs hero with location (x,y)
 	public Hero(int x,int y){
-		w=null;
-		h=null;
+		w=new Weapon("Stick",1);
+		h=new Hat("Baseball Cap", 0, 0, null);
+		b=new Boots("Sneakers", 1, null);
 		this.l = new Location(x,y);
 		this.myhealth=100;
 		this.chealth=100;
 		this.attack=2;
 		this.defense=1;
-		this.Attacks[0]="Punch";
-		this.Attacks[1]="Nada";
-		this.Attacks[2]="Nada";
-		this.Attacks[3]="Nada";
+		this.speed=1;
+		//this.Attacks[0]="Punch";
+		//this.Attacks[1]="Nada";
+		//this.Attacks[2]="Nada";
+		//this.Attacks[3]="Nada";
 	}
 		
 
@@ -44,11 +47,15 @@ public class Hero extends Monster{
 	}
 	@Override	
 	public int getAttack(){
-		return this.attack; //+ this.w.pwr();
+		return this.attack + this.w.pwr();
 	}
 	@Override
 	public int getDefense(){
 		return this.defense + this.h.amr();
+	}
+	@Override
+	public int getSpeed(){
+		return this.speed + this.b.spd();
 	}
 	
 	public int mp(){
