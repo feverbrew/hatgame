@@ -15,14 +15,15 @@ What's done?:
 
 Currently working on:
 - Battle graphics
+- Different kinds of monsters
+- Weapon and hat library
 
 Needs to be implemented:
-- Advanced battle system (special attacks and learning them)
+- Advanced battle system (hat game)
 - Shops
-- Different kinds of monsters
 - Random map design
 - Story and goal
-- Weapon and hat library
 - Level system
+- Abilities
 
 Thanks for checking this out, any contributions or suggestions (or critiques) are welcome!
